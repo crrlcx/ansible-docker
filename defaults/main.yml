@@ -5,7 +5,7 @@ docker_package: "docker-{{ docker_edition }}"
 docker_package_state: present
 
 # Service options.
-docker_service_custom_config: false
+docker_service_custom_config: []
 docker_service_enabled: true
 docker_service_state: started
 docker_restart_handler_state: restarted

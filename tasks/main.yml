@@ -17,7 +17,8 @@
     src: etc/docker/daemon.json.j2
     dest: /etc/docker/daemon.json
   when:
-    - docker_service_custom_config | bool
+    - docker_service_custom_config is defined
+    - docker_service_custom_config | length > 0
   notify: restart docker
 
 - name: Install docker
@@ -57,4 +58,5 @@
 
 - include_tasks: docker-users.yml
   when:
+    - docker_users is defined
     - docker_users | length > 0

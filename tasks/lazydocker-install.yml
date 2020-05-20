@@ -8,7 +8,7 @@
 - name: lazydocker | get current binary version
   shell: |
     set -o pipefail
-    sudo -Hu nobody timeout 2 {{ lazydocker_path }} --version 2>&1 | grep -Eoi '([0-9]{1,}\.){1,3}[0-9]{1,}(|-[a-z0-9]{1,})' | sort -uV | head -1
+    sudo -Hu nobody timeout 5 {{ lazydocker_path }} --version 2>&1 | grep -Eoi '([0-9]{1,}\.){1,3}[0-9]{1,}(|-[a-z0-9\.]{1,})' | sort -urV | head -1
   args:
     executable: /bin/bash
   register: lazydocker_current_version
@@ -21,8 +21,8 @@
     src: "{{ lazydocker_url }}"
     dest: "{{ lazydocker_path | dirname }}"
     exclude:
-      - 'README.md'
-      - 'LICENSE'
+      - "README.md"
+      - "LICENSE"
     remote_src: true
     force: true
     owner: root
