@@ -1,5 +1,15 @@
 ---
-- name: restart docker
+- name: Reload systemd daemon if template is changed
+  systemd:
+    daemon_reload: true
+  when:
+    - ansible_service_mgr == 'systemd'
+  listen:
+    - restart docker
+
+- name: Check dockeer service has `docker_restart_handler_state` state
   service:
     name: docker
     state: "{{ docker_restart_handler_state }}"
+  listen:
+    - restart docker
