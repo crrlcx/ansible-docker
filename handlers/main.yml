@@ -6,10 +6,22 @@
     - ansible_service_mgr == 'systemd'
   listen:
     - restart docker
+    - prune docker
+
+- name: Clean timer (like cron task)
+  systemd:
+    name: docker-prune.timer
+    state: "{{ docker_prune | tenary('restarted','stopped') }}"
+    enabled: "{{ docker_prune }}"
+  when:
+    - ansible_service_mgr == 'systemd'
+  listen:
+    - prune docker
 
 - name: Check dockeer service has `docker_restart_handler_state` state
   service:
     name: docker
     state: "{{ docker_restart_handler_state }}"
+    enabled: "{{ docker_restart_handler_state != stopped | bool }}"
   listen:
     - restart docker
